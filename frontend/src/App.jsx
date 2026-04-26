@@ -11,6 +11,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute';
+import logoDashboard from './assets/imagenes/logo-dashboard.png';
 
 // Páginas
 import Login from './pages/Login';
@@ -185,9 +186,12 @@ const MainLayout = ({ children }) => {
       {/* Sidebar (fijo en desktop) */}
       <div className="d-none d-md-block sidebar shadow-sm">
         <div className="sidebar-header d-flex align-items-center">
-          <div className="bg-primary p-2 rounded-3 me-2 text-white d-flex align-items-center justify-content-center" style={{ width: '38px', height: '38px' }}>
-            <span className="fw-bold">B</span>
-          </div>
+          <img 
+            src={logoDashboard} 
+            alt="Logo" 
+            style={{ height: '40px', objectFit: 'contain' }} 
+            className="me-2"
+          />
           <div>
             <h5 className="fw-bold text-dark mb-0" style={{ letterSpacing: '-0.5px' }}>BancoSol</h5>
             <div className="badge bg-light text-primary fw-normal" style={{ fontSize: '0.65rem' }}>Gestión de Cartera</div>

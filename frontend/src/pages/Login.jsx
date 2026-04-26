@@ -8,6 +8,7 @@ import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 import { BiBuilding, BiLock, BiEnvelope } from 'react-icons/bi';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import logoLogin from '../assets/imagenes/logo-login.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -50,13 +51,15 @@ const Login = () => {
         <Card className="shadow-lg border-0 rounded-4 overflow-hidden">
           <div className="bg-primary p-2"></div>
           <Card.Body className="p-5 bg-white">
-            {/* Logo */}
+            {/* Logo BancoSol Institucional */}
             <div className="text-center mb-4">
-              <div className="d-inline-flex p-3 rounded-circle bg-primary bg-opacity-10 mb-3">
-                <BiBuilding size={40} className="text-primary" />
-              </div>
-              <h2 className="fw-bold text-dark mb-0">BancoSol</h2>
-              <p className="text-muted small">Plataforma de Cartera Profesional</p>
+              <img 
+                src={logoLogin} 
+                alt="BancoSol Logo" 
+                style={{ width: '220px', height: 'auto', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} 
+                className="mb-3"
+              />
+              <p className="text-muted small fw-bold">Plataforma de Cartera Profesional</p>
             </div>
 
             {/* Mensaje de error */}

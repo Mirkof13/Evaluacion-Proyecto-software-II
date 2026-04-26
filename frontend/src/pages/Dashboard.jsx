@@ -36,7 +36,7 @@ const Dashboard = () => {
     // Auto-refresh cada 30 segundos (Monitoreo en vivo)
     const interval = setInterval(() => {
       cargarDashboard();
-    }, 30000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, []);

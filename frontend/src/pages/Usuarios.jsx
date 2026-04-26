@@ -73,7 +73,7 @@ const Usuarios = () => {
       setMostrarModal(false);
       cargarUsuarios();
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al procesar identidad');
+      setError(err.message || 'Error al procesar identidad');
     } finally {
       setCargando(false);
     }

@@ -83,7 +83,7 @@ const Clientes = () => {
       setMostrarModal(false);
       cargarClientes();
     } catch (err) {
-      alert('Error al procesar cliente: ' + (err.response?.data?.error || err.message));
+      alert('Error al procesar cliente: ' + (err.message || 'Error desconocido'));
     } finally {
       setGuardando(false);
     }
