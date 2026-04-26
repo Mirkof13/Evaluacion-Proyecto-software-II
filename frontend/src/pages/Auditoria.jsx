@@ -74,7 +74,7 @@ const Auditoria = () => {
     try {
       const res = await axios.get(`/auditoria/${log.id}`);
       // Backend: { success: true, data: logCompleto }
-      setLogSeleccionado(res.data.data);
+      setLogSeleccionado(res.data);
       setShowModal(true);
     } catch (err) {
       console.error('Error cargando detalle de log:', err);

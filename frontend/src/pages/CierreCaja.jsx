@@ -22,8 +22,9 @@ const CierreCaja = () => {
   const cargarResumen = async () => {
     try {
       const res = await axios.get('/caja/resumen');
-      // El backend devuelve { success: true, data: { ... } }
-      setResumen(res.data.data);
+      // res es el body por el interceptor
+      const data = res.data || res;
+      setResumen(data);
     } catch (err) {
       setError('Error al obtener datos de caja');
     } finally {

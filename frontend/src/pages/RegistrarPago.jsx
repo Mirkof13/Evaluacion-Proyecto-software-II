@@ -32,11 +32,11 @@ const RegistrarPago = () => {
       setCargandoDatos(true);
       const res = await axios.get(`/creditos/${id}`);
       // Backend: { success: true, data: creditoCompleto }
-      setCredito(res.data.data);
+      setCredito(res.data);
 
       const pagoRes = await axios.get(`/pagos/${id}/proxima`);
       // Backend: { success: true, data: { proximaCuota: {...} } }
-      const cuota = pagoRes.data?.data?.proximaCuota;
+      const cuota = pagoRes.data?.proximaCuota;
       setProximaCuota(cuota);
 
       if (cuota) {

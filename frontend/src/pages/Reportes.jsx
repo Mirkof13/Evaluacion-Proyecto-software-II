@@ -75,11 +75,11 @@ const Reportes = () => {
        const obtenerData = (index, prop) => {
          const result = resultados[index];
          if (result.status !== 'fulfilled') return null;
-         const responseData = result.value.data;
-         if (!responseData) return null;
-         // La estructura del backend: { success: true, data: {...} }
-         const payload = responseData.data || responseData;
-         return prop ? payload[prop] : payload;
+         // El interceptor de Axios devuelve response.data (el body)
+         // Body = { success: true, data: {...}, message: '...' }
+         // result.value ya es ese body directamente
+         const payload = result.value?.data || result.value;
+         return prop ? (payload?.[prop] ?? null) : payload;
        };
 
        setCarteraData(obtenerData(0, 'cartera') || []);
@@ -170,7 +170,8 @@ const Reportes = () => {
         <div className="d-flex gap-3">
           <Button variant="success" className="shadow-sm px-4 d-flex align-items-center" onClick={async () => {
             const res = await axios.get('/reportes/exportar/cartera', { responseType: 'blob' });
-            const url = window.URL.createObjectURL(new Blob([res.data]));
+            // res ya es el blob por el interceptor
+            const url = window.URL.createObjectURL(new Blob([res]));
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'Cartera_BancoSol.xlsx');

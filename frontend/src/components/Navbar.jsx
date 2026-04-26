@@ -17,9 +17,10 @@ const Navbar = () => {
    useEffect(() => {
      const fetchNotif = async () => {
        try {
-         const res = await axios.get('/notificaciones');
-         // Backend: { success: true, data: notificaciones[] }
-         setNotificaciones((res.data.data || []).filter(n => !n.leida).slice(0, 5));
+        const res = await axios.get('/notificaciones');
+         // interceptor devuelve body: { success, data: [...] }, res.data es el array
+         const lista = Array.isArray(res.data) ? res.data : (res.data || []);
+         setNotificaciones(lista.filter(n => !n.leida).slice(0, 5));
        } catch (err) {
          console.error(err);
        }

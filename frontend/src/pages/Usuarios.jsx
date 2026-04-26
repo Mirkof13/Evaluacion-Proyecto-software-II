@@ -30,7 +30,7 @@ const Usuarios = () => {
     try {
       const res = await axios.get('/usuarios');
       // Backend: { success: true, data: { usuarios: [] } }
-      setUsuarios(res.data.data?.usuarios || []);
+      setUsuarios(res.data?.usuarios || []);
     } catch (err) {
       console.error('Error IAM:', err);
     } finally {
@@ -42,7 +42,7 @@ const Usuarios = () => {
     try {
       const res = await axios.get('/usuarios/roles');
       // Backend: { success: true, data: roles }
-      setRoles(res.data.data || []);
+      setRoles(res.data || []);
     } catch (err) {
       setRoles([{ id: 1, nombre: 'admin' }, { id: 2, nombre: 'gerente' }, { id: 3, nombre: 'analista' }, { id: 4, nombre: 'oficial_credito' }]);
     }

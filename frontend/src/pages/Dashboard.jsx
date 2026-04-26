@@ -59,39 +59,50 @@ const Dashboard = () => {
          axios.get('/reportes/alertas')
        ]);
 
-       // Helper para extraer data: backend => { success: true, data: {...} }
+        // Helper para extraer data de forma segura: backend => { success: true, data: {...} }
+        const extract = (res) => res?.data || res;
 
-       // Procesar cartera
-       const cartera = carteraRes.data?.cartera || [];
-       const totalCartera = cartera.reduce((sum, item) => sum + (item.monto_total || 0), 0);
-       const creditosMora = cartera.find(c => c.estado === 'en_mora')?.monto_total || 0;
-       const clientesActivosCount = cartera.reduce((sum, item) => {
-         if (item.estado === 'activo' || item.estado === 'en_mora' || item.estado === 'al_dia') {
-           return sum + (item.cantidad || 0);
-         }
-         return sum;
-       }, 0);
+        // Procesar cartera
+        const dataCartera = extract(carteraRes);
+        const cartera = dataCartera?.cartera || (Array.isArray(dataCartera) ? dataCartera : []);
+        
+        const totalCartera = cartera.reduce((sum, item) => sum + (parseFloat(item.monto_total) || 0), 0);
+        const creditosMora = cartera.find(c => c.estado === 'en_mora')?.monto_total || 0;
+        const clientesActivosCount = cartera.reduce((sum, item) => {
+          if (['activo', 'en_mora', 'al_dia'].includes(item.estado)) {
+            return sum + (parseInt(item.cantidad) || 0);
+          }
+          return sum;
+        }, 0);
 
-       // Procesar recuperaciones del mes actual
-       const hoy = new Date();
-       const recuperacionesMes = (pagosRes.data?.recuperaciones || [])
-         .filter(r => {
-           if (!r.mes) return false;
-           const mes = new Date(r.mes);
-           return mes.getMonth() === hoy.getMonth() && mes.getFullYear() === hoy.getFullYear();
-         })
-         .reduce((sum, r) => sum + (r.total_recuperado || 0), 0);
+        // Procesar recuperaciones del mes actual
+        const hoy = new Date();
+        const dataRecuperaciones = extract(pagosRes);
+        const recuperacionesList = dataRecuperaciones?.recuperaciones || (Array.isArray(dataRecuperaciones) ? dataRecuperaciones : []);
+        
+        const recuperacionesMes = recuperacionesList
+          .filter(r => {
+            if (!r.mes) return false;
+            const mes = new Date(r.mes);
+            return mes.getMonth() === hoy.getMonth() && mes.getFullYear() === hoy.getFullYear();
+          })
+          .reduce((sum, r) => sum + (parseFloat(r.total_recuperado) || 0), 0);
 
-       setMetricas({
-         totalCartera,
-         clientesActivos: clientesActivosCount,
-         creditosMora,
-         recuperacionesMes
-       });
+        setMetricas({
+          totalCartera,
+          clientesActivos: clientesActivosCount,
+          creditosMora,
+          recuperacionesMes
+        });
 
-       setUltimosCreditos(creditosRes.data?.creditos || []);
-       setActividadReciente(auditRes.data?.logs || []);
-       setAlertas(alertsRes.data?.alertas || []);
+        const dataCreditos = extract(creditosRes);
+        setUltimosCreditos(dataCreditos?.creditos || (Array.isArray(dataCreditos) ? dataCreditos : []));
+        
+        const dataAudit = extract(auditRes);
+        setActividadReciente(dataAudit?.logs || (Array.isArray(dataAudit) ? dataAudit : []));
+        
+        const dataAlerts = extract(alertsRes);
+        setAlertas(dataAlerts?.alertas || (Array.isArray(dataAlerts) ? dataAlerts : []));
      } catch (err) {
        console.error('Error cargando dashboard:', err);
        setError('No se pudieron cargar las métricas');

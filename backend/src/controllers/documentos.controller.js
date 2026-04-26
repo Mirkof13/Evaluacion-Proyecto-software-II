@@ -45,11 +45,3 @@ exports.subirDocumentoCredito = async (req, res) => {
 module.exports = {
   subirDocumentoCredito: exports.subirDocumentoCredito
 };
-
-module.exports = {
-  subirDocumentoCredito: exports.subirDocumentoCredito
-};
-
-module.exports = {
-  subirDocumentoCredito: exports.subirDocumentoCredito || (module.exports = { subirDocumentoCredito: documentos.controller })
-};

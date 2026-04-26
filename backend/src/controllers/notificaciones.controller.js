@@ -47,9 +47,3 @@ module.exports = {
   marcarLeida: exports.marcarLeida,
   marcarTodasLeidas: exports.marcarTodasLeidas
 };
-
-module.exports = {
-  listar: exports.listar,
-  marcarLeida: exports.marcarLeida,
-  marcarTodasLeidas: exports.marcarTodasLeidas
-};

@@ -43,9 +43,9 @@ const CrearCredito = () => {
         return;
       }
       try {
-        const res = await axios.get(`/clientes?busqueda=${busquedaCliente}&limit=5`);
-        // Backend: { success: true, data: { clientes: [] } }
-        setClientesEncontrados(res.data.data?.clientes || []);
+        const res = await axios.get('/clientes', { params: { busqueda: busquedaCliente, limit: 5 } });
+        // res = body = { success, data: { clientes: [], paginacion: {} } }
+        setClientesEncontrados(res.data?.clientes || []);
       } catch (err) {
         console.error('Error buscando clientes:', err);
       }

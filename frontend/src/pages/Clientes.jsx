@@ -39,11 +39,11 @@ const Clientes = () => {
         params: { page: paginacion.page, limit: paginacion.limit, busqueda: termino }
       });
       // Backend: { success: true, data: { clientes: [], paginacion: {} } }
-      setClientes(res.data.data?.clientes || []);
+      setClientes(res.data?.clientes || []);
       setPaginacion(prev => ({
         ...prev,
-        total: res.data.data?.paginacion?.total || 0,
-        totalPages: res.data.data?.paginacion?.totalPages || 0
+        total: res.data?.paginacion?.total || 0,
+        totalPages: res.data?.paginacion?.totalPages || 0
       }));
     } catch (err) {
       console.error('Error cargando clientes:', err);
