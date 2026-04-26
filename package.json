@@ -1,0 +1,32 @@
+{
+  "name": "bancosol-root",
+  "version": "1.0.0",
+  "description": "BancoSol - Sistema de Gestión de Cartera",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "seed:real": "cd backend && npm run seed:real",
+    "kill-port": "powershell \"Get-NetTCPConnection -LocalPort 5000 -ErrorAction SilentlyContinue | Where-Object { $_.OwningProcess -gt 0 } | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }\"",
+    "db:start": "powershell -Command \"& 'C:\\Users\\Miscar\\Downloads\\postgresql-18.3-3-windows-x64-binaries\\pgsql\\bin\\pg_ctl.exe' start -D 'C:\\Users\\Miscar\\Downloads\\postgresql-18.3-3-windows-x64-binaries\\pgsql\\data'\"",
+    "db:stop": "powershell -Command \"& 'C:\\Users\\Miscar\\Downloads\\postgresql-18.3-3-windows-x64-binaries\\pgsql\\bin\\pg_ctl.exe' stop -D 'C:\\Users\\Miscar\\Downloads\\postgresql-18.3-3-windows-x64-binaries\\pgsql\\data'\"",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "prepare": "husky install",
+    "lint:backend": "cd backend && npx eslint",
+    "lint:frontend": "cd frontend && npx eslint"
+  },
+  "lint-staged": {
+    "backend/**/*.js": [
+      "npm run lint:backend -- --fix",
+      "prettier --write"
+    ],
+    "frontend/**/*.{js,jsx}": [
+      "npm run lint:frontend -- --fix",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.1.0"
+  }
+}
