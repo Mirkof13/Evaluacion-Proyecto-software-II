@@ -1,0 +1,242 @@
+/* 
+  BANCOSOL - Sistema de Gestión de Cartera
+  Design System: Minimalist Premium
+  Typography: Inter / Roboto
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bs-primary: #1a1a1a;
+  --bs-primary-rgb: 26, 26, 26;
+  --bg-body: #fdfdfd;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --text-main: #1d1d1f;
+  --text-muted: #86868b;
+  --accent-blue: #0056b3;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout Estructural */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 1px solid #f2f2f2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 2.5rem 2rem;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.sidebar-header h5 {
+  color: #000 !important;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px; /* Ancho de sidebar */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  padding: 1rem 0;
+}
+
+.sidebar-menu .nav-item {
+  padding: 0.2rem 1rem;
+}
+
+.sidebar-menu .nav-link {
+  border-radius: 8px;
+  color: var(--text-muted) !important;
+  font-size: 0.95rem;
+  padding: 0.8rem 1.2rem !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-menu .nav-link:hover {
+  background-color: #f9f9f9;
+  color: var(--text-main) !important;
+  transform: translateX(4px);
+}
+
+.sidebar-menu .nav-link.active {
+  background-color: #f0f0f0;
+  color: var(--text-main) !important;
+  font-weight: 600;
+}
+
+.sidebar-menu .nav-link.active .me-3 {
+  color: var(--accent-blue);
+}
+
+/* Navbar Premium */
+.navbar {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #f2f2f2;
+  padding: 1.2rem 2.5rem !important;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #000 !important;
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-main) !important;
+}
+
+/* Cards & Layout */
+.card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  border-bottom: 1px solid #f8f8f8;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #000;
+  border-color: #000;
+}
+
+/* Tables */
+.table {
+  color: var(--text-main);
+  font-size: 0.9rem;
+}
+
+.table thead th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.table tbody td {
+  padding: 1.2rem 0.75rem;
+  border-bottom: 1px solid #fafafa;
+}
+
+/* Badges */
+.badge {
+  font-weight: 600;
+  padding: 0.5em 0.8em;
+  border-radius: 6px;
+}
+
+/* Transitions */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d0d0d0;
+}
+
+/* Utility */
+.center-spinner {
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+code {
+  color: var(--accent-blue);
+  background: #f0f7ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Animaciones de Conectividad */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
