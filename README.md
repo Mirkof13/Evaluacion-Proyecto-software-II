@@ -413,6 +413,34 @@ Desarrollado siguiendo:
 
 ---
 
+## 📂 Estructura de Entregables (Hito 3)
+
+Para facilitar la revisión del sistema, el código se ha organizado y versionado siguiendo los 10 bloques críticos del proyecto:
+
+*   **PARTE A: Estructura de Base de Datos y Semillas**
+    *   Ubicación: `backend/database/`
+    *   Archivos: `schema.sql`, `seed.sql`, `seed_real.js`.
+*   **PARTE B: Configuración del Servidor y Modelos Sequelize**
+    *   Archivos: `backend/server.js`, `backend/src/models/*.js`.
+*   **PARTE C: Capa de Seguridad (Ciberseguridad)**
+    *   Archivos: `backend/src/middleware/auth.js`, `roles.js`, `auditoria.js`.
+*   **PARTE D: Lógica de Negocio y Controladores Financieros**
+    *   Archivos: `backend/src/services/`, `backend/src/controllers/`.
+*   **PARTE E: Rutas de la API y Variables de Entorno**
+    *   Archivos: `backend/src/routes/`, `backend/.env`.
+*   **PARTE F: Infraestructura del Frontend (Core)**
+    *   Archivos: `frontend/src/api/`, `frontend/src/context/`, `frontend/src/App.jsx`.
+*   **PARTE G: Páginas Principales (Flujo de Origen)**
+    *   Archivos: `Login.jsx`, `Dashboard.jsx`, `Clientes.jsx`, `CrearCredito.jsx`.
+*   **PARTE H: Operaciones de Cartera y Auditoría Visual**
+    *   Archivos: `DetalleCredito.jsx`, `RegistrarPago.jsx`, `Reportes.jsx`, `Auditoria.jsx`.
+*   **PARTE I: Aseguramiento de Calidad (Testing)**
+    *   Archivos: `backend/tests/`, `README.md`, `INFORME_FINAL_BANCOSOL.md`.
+*   **PARTE J: Optimización y Refactorización (Clean Code)**
+    *   Evidencia: Aplicación de principios SOLID en `services/` y reducción de Complejidad Ciclomática.
+
+---
+
 ## ⚠️ Notas de Producción
 
 - **Cambiar `JWT_SECRET`** en `.env` por clave de 256 bits mínima (usar `openssl rand -hex 32`)
@@ -421,6 +449,10 @@ Desarrollado siguiendo:
 - **Monitoreo** de logs con Graylog/ELK
 - **Rate limiting** ya configurado (100 req/15min por IP)
 - **Helmet.js** headers de seguridad activos
+
+---
+**Firma del Estudiante:** ________________________  
+**UPAL — Abril 2026**
 
 ---
 
