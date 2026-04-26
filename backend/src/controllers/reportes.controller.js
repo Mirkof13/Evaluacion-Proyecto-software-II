@@ -358,4 +358,15 @@ exports.exportarCartera = async (req, res) => {
   }
 };
 
+module.exports = {
+  cartera: exports.cartera,
+  morosidad: exports.morosidad,
+  recuperaciones: exports.recuperaciones,
+  mineria: exports.mineria,
+  asfi: exports.asfi,
+  alertas: exports.alertas,
+  seguridad: exports.seguridad,
+  exportarCartera: exports.exportarCartera
+};
+
 

@@ -41,3 +41,15 @@ exports.subirDocumentoCredito = async (req, res) => {
     return error(res, 'Error al subir documento: ' + err.message, 500);
   }
 };
+
+module.exports = {
+  subirDocumentoCredito: exports.subirDocumentoCredito
+};
+
+module.exports = {
+  subirDocumentoCredito: exports.subirDocumentoCredito
+};
+
+module.exports = {
+  subirDocumentoCredito: exports.subirDocumentoCredito || (module.exports = { subirDocumentoCredito: documentos.controller })
+};

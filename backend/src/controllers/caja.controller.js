@@ -63,3 +63,8 @@ exports.ejecutarCierre = async (req, res) => {
     return error(res, 'Error al ejecutar cierre: ' + err.message, 500);
   }
 };
+
+module.exports = {
+  obtenerResumenCierre: exports.obtenerResumenCierre,
+  ejecutarCierre: exports.ejecutarCierre
+};

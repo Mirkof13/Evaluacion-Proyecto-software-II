@@ -133,3 +133,9 @@ exports.proximaCuota = async (req, res) => {
     return error(res, err.message, 500);
   }
 };
+
+module.exports = {
+  historial: exports.historial,
+  registrar: exports.registrar,
+  proximaCuota: exports.proximaCuota
+};

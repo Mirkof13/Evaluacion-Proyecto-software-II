@@ -41,3 +41,15 @@ exports.marcarTodasLeidas = async (req, res) => {
     return error(res, 'Error: ' + err.message, 500);
   }
 };
+
+module.exports = {
+  listar: exports.listar,
+  marcarLeida: exports.marcarLeida,
+  marcarTodasLeidas: exports.marcarTodasLeidas
+};
+
+module.exports = {
+  listar: exports.listar,
+  marcarLeida: exports.marcarLeida,
+  marcarTodasLeidas: exports.marcarTodasLeidas
+};

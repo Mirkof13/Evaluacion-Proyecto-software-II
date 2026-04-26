@@ -185,3 +185,10 @@ exports.actualizar = [
     }
   }
 ];
+
+module.exports = {
+  listar: exports.listar,
+  obtener: exports.obtener,
+  crear: exports.crear,
+  actualizar: exports.actualizar
+};

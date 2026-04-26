@@ -144,3 +144,8 @@ exports.obtener = async (req, res) => {
   }
 };
 
+module.exports = {
+  listar: exports.listar,
+  obtener: exports.obtener
+};
+

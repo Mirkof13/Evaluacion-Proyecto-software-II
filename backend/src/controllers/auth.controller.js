@@ -66,3 +66,9 @@ exports.perfil = async (req, res) => {
     return error(res, err.message, 500);
   }
 };
+
+module.exports = {
+  login: exports.login,
+  logout: exports.logout,
+  perfil: exports.perfil
+};

@@ -157,3 +157,10 @@ exports.cambiarEstado = [
     }
   }
 ];
+
+module.exports = {
+  listar: exports.listar,
+  crear: exports.crear,
+  obtener: exports.obtener,
+  cambiarEstado: exports.cambiarEstado
+};
