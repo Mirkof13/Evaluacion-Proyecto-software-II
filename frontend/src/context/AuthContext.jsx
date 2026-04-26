@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get('/auth/me');
         // El backend devuelve { success: true, data: { ... } }
-        const usuario = response.data.data;
+        const usuario = response.data;
         
         dispatch({
           type: 'LOGIN_SUCCESS',
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('/auth/login', { email, password });
       // El backend devuelve { success: true, data: { token, usuario } }
-      const { token, usuario } = response.data.data;
+      const { token, usuario } = response.data;
 
       localStorage.setItem('bancosol_token', token);
       localStorage.setItem('bancosol_user', JSON.stringify(usuario));

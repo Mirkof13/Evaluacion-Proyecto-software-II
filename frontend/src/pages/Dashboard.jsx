@@ -60,10 +60,9 @@ const Dashboard = () => {
        ]);
 
        // Helper para extraer data: backend => { success: true, data: {...} }
-       const getData = (res, prop) => (res?.data?.data ? (prop ? res.data.data[prop] : res.data.data) : (prop ? res?.data?.[prop] : res?.data));
 
        // Procesar cartera
-       const cartera = getData(carteraRes, 'cartera') || [];
+       const cartera = carteraRes.data?.cartera || [];
        const totalCartera = cartera.reduce((sum, item) => sum + (item.monto_total || 0), 0);
        const creditosMora = cartera.find(c => c.estado === 'en_mora')?.monto_total || 0;
        const clientesActivosCount = cartera.reduce((sum, item) => {
@@ -75,7 +74,7 @@ const Dashboard = () => {
 
        // Procesar recuperaciones del mes actual
        const hoy = new Date();
-       const recuperacionesMes = (getData(pagosRes, 'recuperaciones') || [])
+       const recuperacionesMes = (pagosRes.data?.recuperaciones || [])
          .filter(r => {
            if (!r.mes) return false;
            const mes = new Date(r.mes);
@@ -90,9 +89,9 @@ const Dashboard = () => {
          recuperacionesMes
        });
 
-       setUltimosCreditos(getData(creditosRes, 'creditos') || []);
-       setActividadReciente(getData(auditRes, 'logs') || []);
-       setAlertas(getData(alertsRes, 'alertas') || []);
+       setUltimosCreditos(creditosRes.data?.creditos || []);
+       setActividadReciente(auditRes.data?.logs || []);
+       setAlertas(alertsRes.data?.alertas || []);
      } catch (err) {
        console.error('Error cargando dashboard:', err);
        setError('No se pudieron cargar las métricas');
