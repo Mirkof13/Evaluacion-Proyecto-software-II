@@ -11,6 +11,32 @@ const authService = require('../services/auth.service');
 const { success, error, created, updated, notFound, validationError, forbidden, conflict, businessError } = require('../utils/responseHelper');
 
 /**
+ * GET /api/usuarios/oficiales
+ * Listar solo oficiales de crédito (para filtros y asignación)
+ * Acceso: oficial_credito+, admin, gerente, analista
+ */
+exports.listarOficiales = async (req, res) => {
+  try {
+    // Buscar rol 'oficial_credito'
+    const rolOficial = await Rol.findOne({ where: { nombre: 'oficial_credito' } });
+    if (!rolOficial) {
+      return error(res, 'Rol oficial_credito no configurado', 500);
+    }
+
+    const oficiales = await Usuario.findAll({
+      where: { activo: true, rol_id: rolOficial.id },
+      include: [{ model: Rol, as: 'rol', attributes: ['id', 'nombre'] }],
+      attributes: ['id', 'nombre', 'email'],
+      order: [['nombre', 'ASC']]
+    });
+    return success(res, oficiales);
+  } catch (err) {
+    console.error('[Usuarios.listarOficiales]', err);
+    return error(res, 'Error al obtener oficiales: ' + err.message, 500);
+  }
+};
+
+/**
  * GET /api/usuarios
  * Listar usuarios (solo admin)
  */
@@ -133,3 +159,5 @@ exports.actualizar = [
     }
   }
 ];
+
+module.exports = exports;

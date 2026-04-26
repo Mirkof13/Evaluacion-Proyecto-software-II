@@ -59,34 +59,41 @@ const Reportes = () => {
     cargarDatos();
   }, [periodo]);
 
-  const cargarDatos = async () => {
-    setCargando(true);
-    try {
-      // Uso de Promise.allSettled para robustez: Si un endpoint falla, no rompe todo el dashboard
-      const resultados = await Promise.allSettled([
-        axios.get('/reportes/cartera'),
-        axios.get('/reportes/morosidad'),
-        axios.get('/reportes/recuperaciones'),
-        axios.get('/creditos?limit=100'),
-        axios.get('/reportes/mineria'),
-        axios.get('/reportes/seguridad')
-      ]);
-      
-      const obtenerData = (index, property) => 
-        resultados[index].status === 'fulfilled' ? resultados[index].value.data?.[property] || resultados[index].value.data : null;
+   const cargarDatos = async () => {
+     setCargando(true);
+     try {
+       // Uso de Promise.allSettled para robustez: Si un endpoint falla, no rompe todo el dashboard
+       const resultados = await Promise.allSettled([
+         axios.get('/reportes/cartera'),
+         axios.get('/reportes/morosidad'),
+         axios.get('/reportes/recuperaciones'),
+         axios.get('/creditos?limit=100'),
+         axios.get('/reportes/mineria'),
+         axios.get('/reportes/seguridad')
+       ]);
+       
+       const obtenerData = (index, prop) => {
+         const result = resultados[index];
+         if (result.status !== 'fulfilled') return null;
+         const responseData = result.value.data;
+         if (!responseData) return null;
+         // La estructura del backend: { success: true, data: {...} }
+         const payload = responseData.data || responseData;
+         return prop ? payload[prop] : payload;
+       };
 
-      setCarteraData(obtenerData(0, 'cartera') || []);
-      setMorosidadData(obtenerData(1, 'morosidad') || []);
-      setRecuperacionesData(obtenerData(2, 'recuperaciones') || []);
-      setCreditosData(obtenerData(3, 'creditos') || []);
-      setMineriaData(obtenerData(4));
-      setSeguridadData(obtenerData(5));
-    } catch (err) {
-      console.error('Error cargando reportes:', err);
-    } finally {
-      setCargando(false);
-    }
-  };
+       setCarteraData(obtenerData(0, 'cartera') || []);
+       setMorosidadData(obtenerData(1, 'morosidad') || []);
+       setRecuperacionesData(obtenerData(2, 'recuperaciones') || []);
+       setCreditosData(obtenerData(3, 'creditos') || []);
+       setMineriaData(obtenerData(4));
+       setSeguridadData(obtenerData(5));
+     } catch (err) {
+       console.error('Error cargando reportes:', err);
+     } finally {
+       setCargando(false);
+     }
+   };
 
   const descargarGrafico = (ref, nombre) => {
     if (ref.current) {

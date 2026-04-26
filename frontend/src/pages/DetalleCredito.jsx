@@ -32,8 +32,9 @@ const DetalleCredito = () => {
     try {
       setCargando(true);
       const res = await axios.get(`/creditos/${id}`);
-      setCredito(res.data);
-      setNuevoEstado(res.data.estado);
+      // Backend: { success: true, data: creditoCompleto }
+      setCredito(res.data.data);
+      setNuevoEstado(res.data.data.estado);
       setError('');
     } catch (err) {
       console.error('Error cargando crédito:', err);

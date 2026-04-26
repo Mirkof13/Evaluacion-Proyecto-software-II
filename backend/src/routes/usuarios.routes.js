@@ -12,9 +12,8 @@ const { auditoria } = require('../middleware/auditoria');
 const { Rol } = require('../models');
 
 router.use(authMiddleware);
-router.use(authorize(['admin']));
 
-// GET /api/roles - Listar roles (para dropdown)
+// GET /api/usuarios/roles - Listar roles (para dropdown) - Público autenticado
 router.get('/roles', async (req, res) => {
   try {
     const roles = await Rol.findAll({ attributes: ['id', 'nombre', 'descripcion'] });
@@ -30,6 +29,13 @@ router.get('/roles', async (req, res) => {
     });
   }
 });
+
+// GET /api/usuarios/oficiales - Listar solo oficiales de crédito (para filtros)
+// Acceso: oficial_credito+, admin, gerente, analista
+router.get('/oficiales', authorize(['oficial_credito', 'analista', 'gerente', 'admin']), usuariosController.listarOficiales);
+
+// Rutas de CRUD (solo admin)
+router.use(authorize(['admin']));
 
 // GET /api/usuarios
 router.get('/', usuariosController.listar);

@@ -44,7 +44,8 @@ const CrearCredito = () => {
       }
       try {
         const res = await axios.get(`/clientes?busqueda=${busquedaCliente}&limit=5`);
-        setClientesEncontrados(res.data?.clientes || []);
+        // Backend: { success: true, data: { clientes: [] } }
+        setClientesEncontrados(res.data.data?.clientes || []);
       } catch (err) {
         console.error('Error buscando clientes:', err);
       }
@@ -56,11 +57,14 @@ const CrearCredito = () => {
   useEffect(() => {
     if (formCredito.monto && formCredito.tasa_interes && formCredito.plazo_meses) {
       const monto = parseFloat(formCredito.monto);
-      const tasa = (parseFloat(formCredito.tasa_interes) / 100) / 12; // mensual
+      const tasaAnual = parseFloat(formCredito.tasa_interes);
       const plazo = parseInt(formCredito.plazo_meses);
 
-      if (monto > 0 && tasa > 0 && plazo > 0) {
-        const cuota = (monto * tasa) / (1 - Math.pow(1 + tasa, -plazo));
+      if (monto > 0 && tasaAnual > 0 && plazo > 0) {
+        // Fórmula Francesa correcta: A = P * [i * (1+i)^n] / [(1+i)^n - 1]
+        const tasaMensual = (tasaAnual / 100) / 12;
+        const factor = Math.pow(1 + tasaMensual, plazo);
+        const cuota = (monto * tasaMensual * factor) / (factor - 1);
         setCuotaEstimada(cuota);
       }
     } else {

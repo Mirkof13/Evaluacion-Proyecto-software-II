@@ -73,7 +73,8 @@ const Auditoria = () => {
   const verDetalle = async (log) => {
     try {
       const res = await axios.get(`/auditoria/${log.id}`);
-      setLogSeleccionado(res.data);
+      // Backend: { success: true, data: logCompleto }
+      setLogSeleccionado(res.data.data);
       setShowModal(true);
     } catch (err) {
       console.error('Error cargando detalle de log:', err);

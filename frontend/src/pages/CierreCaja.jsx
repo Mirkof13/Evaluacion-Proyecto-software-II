@@ -22,7 +22,8 @@ const CierreCaja = () => {
   const cargarResumen = async () => {
     try {
       const res = await axios.get('/caja/resumen');
-      setResumen(res.data);
+      // El backend devuelve { success: true, data: { ... } }
+      setResumen(res.data.data);
     } catch (err) {
       setError('Error al obtener datos de caja');
     } finally {

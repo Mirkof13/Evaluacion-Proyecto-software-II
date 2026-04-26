@@ -29,7 +29,8 @@ const Usuarios = () => {
     setCargando(true);
     try {
       const res = await axios.get('/usuarios');
-      setUsuarios(res.data?.usuarios || []);
+      // Backend: { success: true, data: { usuarios: [] } }
+      setUsuarios(res.data.data?.usuarios || []);
     } catch (err) {
       console.error('Error IAM:', err);
     } finally {
@@ -40,7 +41,8 @@ const Usuarios = () => {
   const cargarRoles = async () => {
     try {
       const res = await axios.get('/usuarios/roles');
-      setRoles(res.data || []);
+      // Backend: { success: true, data: roles }
+      setRoles(res.data.data || []);
     } catch (err) {
       setRoles([{ id: 1, nombre: 'admin' }, { id: 2, nombre: 'gerente' }, { id: 3, nombre: 'analista' }, { id: 4, nombre: 'oficial_credito' }]);
     }

@@ -15,7 +15,8 @@ const Notificaciones = () => {
   const cargarNotificaciones = async () => {
     try {
       const res = await axios.get('/notificaciones');
-      setNotificaciones(res.data);
+      // El backend devuelve { success: true, data: [...] }
+      setNotificaciones(res.data.data || []);
     } catch (err) {
       console.error('Error:', err);
     } finally {

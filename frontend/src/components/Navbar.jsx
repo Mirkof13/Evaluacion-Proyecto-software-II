@@ -14,17 +14,18 @@ const Navbar = () => {
   const { usuario, logout } = useAuth();
   const [notificaciones, setNotificaciones] = useState([]);
 
-  useEffect(() => {
-    const fetchNotif = async () => {
-      try {
-        const res = await axios.get('/notificaciones');
-        setNotificaciones(res.data.filter(n => !n.leida).slice(0, 5));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    if (usuario) fetchNotif();
-  }, [usuario]);
+   useEffect(() => {
+     const fetchNotif = async () => {
+       try {
+         const res = await axios.get('/notificaciones');
+         // Backend: { success: true, data: notificaciones[] }
+         setNotificaciones((res.data.data || []).filter(n => !n.leida).slice(0, 5));
+       } catch (err) {
+         console.error(err);
+       }
+     };
+     if (usuario) fetchNotif();
+   }, [usuario]);
 
   return (
     <BSNavbar bg="white" className="navbar border-0" expand="lg">

@@ -38,8 +38,8 @@ const ListaCreditos = () => {
 
   const cargarOficiales = async () => {
     try {
-      const res = await axios.get('/usuarios');
-      setOficiales(res.data?.usuarios || []);
+      const res = await axios.get('/usuarios/oficiales');
+      setOficiales(res.data?.data || []);
     } catch (err) {
       console.error('Error cargando oficiales:', err);
     }
@@ -54,11 +54,12 @@ const ListaCreditos = () => {
       });
 
       const res = await axios.get('/creditos', { params });
-      setCreditos(res.data?.creditos || []);
+      // Backend: { success: true, data: { creditos: [], paginacion: {} } }
+      setCreditos(res.data.data?.creditos || []);
       setPaginacion(prev => ({
         ...prev,
-        total: res.data?.paginacion?.total || 0,
-        totalPages: res.data?.paginacion?.totalPages || 0
+        total: res.data.data?.paginacion?.total || 0,
+        totalPages: res.data.data?.paginacion?.totalPages || 0
       }));
     } catch (err) {
       console.error('Error en carga de cartera:', err);

@@ -31,6 +31,9 @@ const pagoService = {
         throw new Error('Crédito no encontrado');
       }
 
+      // Guardar estado anterior para auditoría (antes de cualquier modificación)
+      const estadoAnterior = credito.estado;
+
       // 2. Buscar amortización pendiente más próxima (si no se especifica)
       let amortizacion;
       if (datos.amortizacion_id) {
@@ -111,10 +114,10 @@ const pagoService = {
 
       await credito.save({ transaction });
 
-      // 9. Registrar cambio de estado en historial
+      // 9. Registrar cambio de estado en historial (usando estado capturado antes del cambio)
       await EstadoCredito.create({
         credito_id: credito.id,
-        estado_anterior: credito.estado === 'cancelado' ? 'activo' : 'en_mora',  // simplificado
+        estado_anterior: estadoAnterior,
         estado_nuevo: credito.estado,
         usuario_id: datos.usuario_id,
         motivo: `Pago registrado: Bs. ${datos.monto_pagado.toFixed(2)}`
@@ -129,16 +132,16 @@ const pagoService = {
 
       const creditoActualizado = await this.obtenerEstadoCredito(credito.id);
 
-      return {
-        pago: pagoCompleto,
-        credito: creditoActualizado
-      };
-    } catch (error) {
-      await transaction.rollback();
-      console.error('[registrarPago]', error);
-      throw error;
-    }
-  },
+       return {
+         pago: pagoCompleto,
+         credito: creditoActualizado
+       };
+     } catch (error) {
+       await transaction.rollback();
+       console.error('[registrarPago]', error);
+       throw error;
+     }
+   },
 
   /**
    * Obtener historial de pagos de un crédito

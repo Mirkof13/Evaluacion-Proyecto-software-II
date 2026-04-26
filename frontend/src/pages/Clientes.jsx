@@ -36,13 +36,14 @@ const Clientes = () => {
     setCargando(true);
     try {
       const res = await axios.get('/clientes', {
-        params: { page: paginacion.page, limit: paginacion.limit, search: termino }
+        params: { page: paginacion.page, limit: paginacion.limit, busqueda: termino }
       });
-      setClientes(res.data?.clientes || []);
+      // Backend: { success: true, data: { clientes: [], paginacion: {} } }
+      setClientes(res.data.data?.clientes || []);
       setPaginacion(prev => ({
         ...prev,
-        total: res.data?.paginacion?.total || 0,
-        totalPages: res.data?.paginacion?.totalPages || 0
+        total: res.data.data?.paginacion?.total || 0,
+        totalPages: res.data.data?.paginacion?.totalPages || 0
       }));
     } catch (err) {
       console.error('Error cargando clientes:', err);

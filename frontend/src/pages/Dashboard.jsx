@@ -41,63 +41,65 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const cargarDashboard = async () => {
-    try {
-      setCargando(true);
+   const cargarDashboard = async () => {
+     try {
+       setCargando(true);
 
-      // Cargar múltiples endpoints en paralelo
-      const [carteraRes, creditosRes, pagosRes, auditRes] = await Promise.all([
-        // 1. Cartera total por estado
-        axios.get('/reportes/cartera'),
-        // 2. Últimos créditos
-        axios.get('/creditos?limit=5'),
-        // 3. Pagos del mes actual
-        axios.get('/reportes/recuperaciones'),
-        // 4. Auditoría reciente
-        axios.get('/auditoria?limit=5')
-      ]);
+       // Cargar múltiples endpoints en paralelo
+       const [carteraRes, creditosRes, pagosRes, auditRes, alertsRes] = await Promise.all([
+         // 1. Cartera total por estado
+         axios.get('/reportes/cartera'),
+         // 2. Últimos créditos
+         axios.get('/creditos?limit=5'),
+         // 3. Pagos del mes actual
+         axios.get('/reportes/recuperaciones'),
+         // 4. Auditoría reciente
+         axios.get('/auditoria?limit=5'),
+         // 5. Alertas de mora
+         axios.get('/reportes/alertas')
+       ]);
 
-      // Procesar cartera
-      const cartera = carteraRes.data?.cartera || [];
-      const totalCartera = cartera.reduce((sum, item) => sum + (item.monto_total || 0), 0);
-      const creditosMora = cartera.find(c => c.estado === 'en_mora')?.monto_total || 0;
-      const clientesActivosCount = cartera.reduce((sum, item) => {
-        if (item.estado === 'activo' || item.estado === 'en_mora' || item.estado === 'al_dia') {
-          return sum + (item.cantidad || 0);
-        }
-        return sum;
-      }, 0);
+       // Helper para extraer data: backend => { success: true, data: {...} }
+       const getData = (res, prop) => (res?.data?.data ? (prop ? res.data.data[prop] : res.data.data) : (prop ? res?.data?.[prop] : res?.data));
 
-      // Procesar recuperaciones del mes actual
-      const hoy = new Date();
-      const recuperacionesMes = (pagosRes.data?.recuperaciones || [])
-        .filter(r => {
-          if (!r.mes) return false;
-          const mes = new Date(r.mes);
-          return mes.getMonth() === hoy.getMonth() && mes.getFullYear() === hoy.getFullYear();
-        })
-        .reduce((sum, r) => sum + (r.total_recuperado || 0), 0);
+       // Procesar cartera
+       const cartera = getData(carteraRes, 'cartera') || [];
+       const totalCartera = cartera.reduce((sum, item) => sum + (item.monto_total || 0), 0);
+       const creditosMora = cartera.find(c => c.estado === 'en_mora')?.monto_total || 0;
+       const clientesActivosCount = cartera.reduce((sum, item) => {
+         if (item.estado === 'activo' || item.estado === 'en_mora' || item.estado === 'al_dia') {
+           return sum + (item.cantidad || 0);
+         }
+         return sum;
+       }, 0);
 
-      setMetricas({
-        totalCartera,
-        clientesActivos: clientesActivosCount,
-        creditosMora,
-        recuperacionesMes
-      });
+       // Procesar recuperaciones del mes actual
+       const hoy = new Date();
+       const recuperacionesMes = (getData(pagosRes, 'recuperaciones') || [])
+         .filter(r => {
+           if (!r.mes) return false;
+           const mes = new Date(r.mes);
+           return mes.getMonth() === hoy.getMonth() && mes.getFullYear() === hoy.getFullYear();
+         })
+         .reduce((sum, r) => sum + (r.total_recuperado || 0), 0);
 
-      setUltimosCreditos(creditosRes.data?.creditos || []);
-      setActividadReciente(auditRes.data?.logs || []);
+       setMetricas({
+         totalCartera,
+         clientesActivos: clientesActivosCount,
+         creditosMora,
+         recuperacionesMes
+       });
 
-      // 4. Alertas de mora
-      const alertsRes = await axios.get('/reportes/alertas');
-      setAlertas(alertsRes.data?.alertas || []);
-    } catch (err) {
-      console.error('Error cargando dashboard:', err);
-      setError('No se pudieron cargar las métricas');
-    } finally {
-      setCargando(false);
-    }
-  };
+       setUltimosCreditos(getData(creditosRes, 'creditos') || []);
+       setActividadReciente(getData(auditRes, 'logs') || []);
+       setAlertas(getData(alertsRes, 'alertas') || []);
+     } catch (err) {
+       console.error('Error cargando dashboard:', err);
+       setError('No se pudieron cargar las métricas');
+     } finally {
+       setCargando(false);
+     }
+   };
 
   if (cargando) {
     return <div className="center-spinner"><Spinner animation="border" /></div>;

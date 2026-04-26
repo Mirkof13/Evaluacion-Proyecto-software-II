@@ -118,7 +118,7 @@ exports.morosidad = [
 exports.recuperaciones = [
   query('fecha_desde').optional().isISO8601(),
   query('fecha_hasta').optional().isISO8601(),
-  query('tipo').optional().isIn(['cuota', 'antecipo', 'reprogramacion']),
+  query('tipo').optional().isIn(['cuota', 'anticipo', 'reprogramacion', 'castigo']),
 
   async (req, res) => {
     try {
@@ -130,8 +130,11 @@ exports.recuperaciones = [
       const { fecha_desde, fecha_hasta, tipo } = req.query;
 
       const where = {};
-      if (fecha_desde) where.fecha_pago = { ...where.fecha_pago, [Op.gte]: fecha_desde };
-      if (fecha_hasta) where.fecha_pago = { ...where.fecha_pago, [Op.lte]: fecha_hasta };
+      if (fecha_desde || fecha_hasta) {
+        where.fecha_pago = {};
+        if (fecha_desde) where.fecha_pago[Op.gte] = fecha_desde;
+        if (fecha_hasta) where.fecha_pago[Op.lte] = fecha_hasta;
+      }
       if (tipo) where.tipo = tipo;
 
       const resultados = await Pago.findAll({

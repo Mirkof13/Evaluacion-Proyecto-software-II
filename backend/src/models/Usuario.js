@@ -84,7 +84,7 @@ const Usuario = sequelize.define('Usuario', {
   }
 });
 
-// Agregar métodos de instancia (Sequelize v6+)
+// Asociación (definida en models/index.js, pero agregamos método helper)
 Usuario.prototype.verifyPassword = async function(candidatePassword) {
   const bcryptRounds = parseInt(process.env.BCRYPT_ROUNDS) || 12;
   return await bcrypt.compare(candidatePassword, this.password_hash);
